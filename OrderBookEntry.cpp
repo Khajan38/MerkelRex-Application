@@ -14,11 +14,7 @@ auto line = []() {string line (117, '='); return line; }; //lambda fucntion for 
 #define sleep(timed) this_thread::sleep_for(chrono::seconds(timed))
 #define clear_screen system("clear");
 
-enum class OrderBookType : int
-{
-    bid = 0,
-    ask = 1
-};
+enum class OrderBookType : int {bid = 0, ask = 1};
 class OrderBookEntry
 {
     //Private Members
