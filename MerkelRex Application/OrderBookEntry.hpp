@@ -13,11 +13,7 @@ void printLine();
 void sleepForSeconds(int timed);
 void clearScreen();
 
-enum class OrderBookType : int
-{
-    bid = 0,
-    ask = 1
-};
+enum class OrderBookType : int{bid = 0, ask = 1};
 
 class OrderBookEntry{
     //Private Members
@@ -31,4 +27,5 @@ public:
     OrderBookEntry(); //Blank Constructor
     double getPrice(void);
     double getAmount(void);
+    OrderBookType getOrderType (void);
 };

@@ -18,11 +18,11 @@ vector <string> tokenise (string csvLine, char seperator){
      return tokens;
 }
 
-// int main(){
-//      string csvLine; char seperator;
-//      cout<<"\nEnter the string : "; cin>>csvLine;
-//      cout<<"Enter the seperator : "; cin>>seperator;
-//      vector <string> tokens = tokenise(csvLine, seperator);
-//      cout<<"\nTokens : ";for (string i : tokens) cout<<i<<" "; cout<<"\b\b"<<endl;
-//      return 0;
-// }
+int main(){
+     string csvLine; char seperator;
+     cout<<"\nEnter the string : "; getline(cin, csvLine);
+     cout<<"Enter the seperator : "; cin>>seperator;
+     vector <string> tokens = tokenise(csvLine, seperator);
+     cout<<"\nTokens : ";for (string i : tokens) cout<<i<<" "; cout<<"\b\b"<<endl;
+     return 0;
+}

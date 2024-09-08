@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include "OrderBookEntry.hpp"
+#include "CSV Reader.hpp"
 using namespace std;
 
 class MerkelMain{
@@ -26,5 +27,4 @@ public:
     friend void display(const vector<OrderBookEntry> &entries);
     void printMarketStats(); //For Statistical Functions
 };
-
-void loadOrderBook(const vector<OrderBookEntry> &entries, MerkelMain *thisptr);
+void loadOrderBook(vector<OrderBookEntry> &entries, MerkelMain *thisptr);

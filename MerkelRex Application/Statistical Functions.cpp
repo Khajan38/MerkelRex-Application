@@ -45,3 +45,16 @@ double computePriceSpread(const vector<OrderBookEntry> &entries){
     double min{computeLowPrice(entries)}, max{computeHighPrice(entries)};
     return (max - min);
 }
+
+vector <int> noOfBid_Ask (const vector<OrderBookEntry> &entries){
+    if (entries.empty()){
+        cerr << "Error: No entries in order books to compute low price.";
+        return {0, 0}; // Handle empty vector scenario
+    }
+    int bids{0}, asks{0};
+    for (OrderBookEntry i : entries){
+        if (i.getOrderType() == OrderBookType::ask) asks++;
+        else bids++;
+    }
+    return {bids, asks};
+}

@@ -9,6 +9,7 @@ MerkelMain::MerkelMain(){}
 //Blank Constructor for MerkelMain
 
 void MerkelMain::init (){
+    loadOrderBook(entries, this);
     while (true){
         printMenu();
         int choice = getUserOption();
@@ -70,6 +71,10 @@ void MerkelMain::processUserOption(int choice, vector<OrderBookEntry> &entries){
         break;
     case 2:
         cout << "You chose for printing Exhange Status..." << endl;
+        printMarketStats();    
+        cout << "\n\t\t\t\t\t     Press any key to continue " << flush;
+        char pause;
+        cin >> pause;
         break;
     case 3:
         cout << "You chose for placing an Ask..." << endl;
@@ -104,49 +109,47 @@ void MerkelMain::processUserOption(int choice, vector<OrderBookEntry> &entries){
     }
     }
     printLine();
-    char menuChoice{'M'};
-    cout << "\n\t\t     Press M to goto Menu or any other key to look Order Book DataBase : ";
-    cin >> menuChoice;
     sleepForSeconds(2);
     clearScreen();
-    if (menuChoice != 'M') loadOrderBook(entries, this);
     return;
 }
 
-void loadOrderBook (const vector <OrderBookEntry> & entries, MerkelMain * thisptr){
+void loadOrderBook(vector <OrderBookEntry> &entries, MerkelMain *thisptr){
+    entries = CSV_Reader::readCSV("data.csv");
+}
+
+void MerkelMain::printMarketStats(){
+    cout << "\n\t\t\t\t\t\tMarket Statistics"<<endl;
+    vector <int> BidAsk {noOfBid_Ask(entries)};
+    cout << "\nTotal entries : " << entries.size() << endl
+         << "No. of Bids : " << BidAsk[0] << endl
+         << "No. of Asks : " << BidAsk[1] << endl
+         << "Average Price : " << computeAveragePrice(entries) << endl
+         << "Highest Price : " << computeHighPrice(entries) << endl
+         << "Lowest Price : " << computeLowPrice(entries) << endl
+         << "Price Spread : " << computePriceSpread(entries) << endl;
+    return;
+}
+
+//display was made just to check if all entries were properly made
+void display(const vector<OrderBookEntry> &entries){
     printLine();
     cout << "\n\t\t\t\t\t\tORDER BOOK DATABASE\n";
     printLine();
     cout <<endl;
-    display(entries);
-    thisptr->printMarketStats();
+    if (entries.size() == 0){
+        cout << "\nNo entries in Order Books DataBase..." << endl;
+        return;
+    }
+    int count = 1;
+    cout << endl;
+    for (vector<OrderBookEntry>::const_iterator itr = entries.begin(); itr != entries.end(); itr++, count++)
+        cout << count << ". " << itr->timeStamp << "," << itr->product << "," << ((static_cast<int>(itr->orderType)) ? "ask" : "bid") << "," << itr->price << "," << itr->amount << endl;
     cout << "\n\t\t\t\t        Press any key to continue " << flush;
     char pause;
     cin >> pause;
     printLine();
     sleepForSeconds(2);
     clearScreen();
-}
-
-void display(const vector<OrderBookEntry> &entries){
-    if (entries.size() == 0){
-        cout << "\nNo entries in Order Books DataBase..." << endl;
-        return;
-    }
-    //2020/03/17 17:01:24.884492,ETH/BTC,bid,0.02186299,0.1
-    //2020/03/17 17:01:24.884492,BTC/ETH,ask,0.1,0.02186299
-    int count = 1;
-    cout << endl;
-    for (vector<OrderBookEntry>::const_iterator itr = entries.begin(); itr != entries.end(); itr++, count++)
-        cout << count << ". " << itr->timeStamp << "," << itr->product << "," << ((static_cast<int>(itr->orderType)) ? "ask" : "bid") << "," << itr->price << "," << itr->amount << endl;
-    return;
-}
-
-void MerkelMain::printMarketStats(){
-    cout << "\nMarket Statistics : "<<endl;
-    cout << "\nAverage Price : " << computeAveragePrice(entries) << endl
-         << "Highest Price : " << computeHighPrice(entries) << endl
-         << "Lowest Price : " << computeLowPrice(entries) << endl
-         << "Price Spread : " << computePriceSpread(entries) << endl;
     return;
 }

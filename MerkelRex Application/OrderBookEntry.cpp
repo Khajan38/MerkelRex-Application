@@ -6,10 +6,7 @@ using namespace std;
 
 std::string line(){return string(117, '=');}
 
-void printLine(){
-    cout << endl
-         << line() <<endl;
-}
+void printLine(){cout << endl << line() <<endl;}
 
 void sleepForSeconds(int timed){std::this_thread::sleep_for(std::chrono::seconds(timed));}
 
@@ -25,3 +22,4 @@ OrderBookEntry::OrderBookEntry(double price, double amount, string timeStamp, st
 OrderBookEntry::OrderBookEntry() {} //Blank Constructor
 double OrderBookEntry::getPrice(void) { return this->price; }
 double OrderBookEntry::getAmount(void) { return this->amount; }
+OrderBookType OrderBookEntry::getOrderType (void) { return this->orderType; }
