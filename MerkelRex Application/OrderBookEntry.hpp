@@ -21,11 +21,13 @@ class OrderBookEntry{
     string timeStamp, product;
     OrderBookType orderType;
     friend void display(const vector<OrderBookEntry> &entries);
-    //Iterating over vector values
 public:
     OrderBookEntry(double price, double amount, string timeStamp, string product, OrderBookType orderType); //Constructor
     OrderBookEntry(); //Blank Constructor
+    void display (void);
     double getPrice(void);
     double getAmount(void);
     OrderBookType getOrderType (void);
+    string getProduct (void);
+    string getTimeStamp (void);
 };

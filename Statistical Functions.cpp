@@ -1,5 +1,7 @@
 #include <iostream>
-#include "Statistical Functions.hpp"
+#include <vector>
+#include "MerkelRex Application\OrderBookEntry.hpp"
+using namespace std;
 
 double computeAveragePrice(const vector<OrderBookEntry> &entries){
     if (entries.empty()){

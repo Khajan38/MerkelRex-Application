@@ -2,18 +2,17 @@
 
 #include <iostream>
 #include "MerkelMain.hpp"
-#include "Statistical Functions.hpp"
 using namespace std;
 
 MerkelMain::MerkelMain(){} 
 //Blank Constructor for MerkelMain
 
 void MerkelMain::init (){
-    loadOrderBook(entries, this);
+    currentTime = orderbook.getEarliestTime();
     while (true){
         printMenu();
         int choice = getUserOption();
-        processUserOption(choice, entries);
+        processUserOption(choice);
     }
 }
 
@@ -63,7 +62,7 @@ OrderBookEntry MerkelMain::BidAsk(int choice){
     return temp;
 }
 
-void MerkelMain::processUserOption(int choice, vector<OrderBookEntry> &entries){
+void MerkelMain::processUserOption(int choice){
     switch (choice){
     case 1:
         cout << "Help - choose options from the menu" << endl
@@ -78,17 +77,20 @@ void MerkelMain::processUserOption(int choice, vector<OrderBookEntry> &entries){
         break;
     case 3:
         cout << "You chose for placing an Ask..." << endl;
-        entries.push_back(MerkelMain::BidAsk(choice));
+        orderbook.BidAsk(BidAsk(choice));
         break;
     case 4:
         cout << "You chose for placing a Bid..." << endl;
-        entries.push_back(BidAsk(choice));
+        orderbook.BidAsk(BidAsk(choice));
         break;
     case 5:
         cout << "You chose for printing Wallet..." << endl;
         break;
     case 6:
-        cout << "Continuing, Going to the next frame..." << endl;
+        cout << "Continuing, Going to the next frame..." << endl<<endl
+             << "Current Time is : "<<currentTime<<endl;
+        currentTime = orderbook.getNextTime(currentTime);
+        cout<< "Next Time is : "<<currentTime<<endl;
         break;
     default:{
         char exitChoice = 'Y';
@@ -114,20 +116,18 @@ void MerkelMain::processUserOption(int choice, vector<OrderBookEntry> &entries){
     return;
 }
 
-void loadOrderBook(vector <OrderBookEntry> &entries, MerkelMain *thisptr){
-    entries = CSV_Reader::readCSV("data.csv");
-}
-
 void MerkelMain::printMarketStats(){
-    cout << "\n\t\t\t\t\t\tMarket Statistics"<<endl;
-    vector <int> BidAsk {noOfBid_Ask(entries)};
-    cout << "\nTotal entries : " << entries.size() << endl
-         << "No. of Bids : " << BidAsk[0] << endl
-         << "No. of Asks : " << BidAsk[1] << endl
-         << "Average Price : " << computeAveragePrice(entries) << endl
-         << "Highest Price : " << computeHighPrice(entries) << endl
-         << "Lowest Price : " << computeLowPrice(entries) << endl
-         << "Price Spread : " << computePriceSpread(entries) << endl;
+    cout << "\n\t\t\t\t   Market Statistics of "<<currentTime<<endl;
+    cout<<"\nProducts : ";
+    vector <string> productList = orderbook.getKnownProducts();
+    for (string & p : productList){
+        cout<<p<<" :"<<endl;
+        vector <OrderBookEntry> matchedEntries = orderbook.getOrders(OrderBookType::ask, p, currentTime);
+        cout<<"\tNo. of Asks -> "<<matchedEntries.size()<<endl
+            <<"\tMax Ask -> "<<OrderBook::getHighPrice(matchedEntries)<<endl
+            <<"\tMin Ask -> "<<OrderBook::getLowPrice(matchedEntries)<<endl;
+    }
+    cout<<"\b\b"<<endl;
     return;
 }
 

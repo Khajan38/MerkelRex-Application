@@ -23,3 +23,10 @@ OrderBookEntry::OrderBookEntry() {} //Blank Constructor
 double OrderBookEntry::getPrice(void) { return this->price; }
 double OrderBookEntry::getAmount(void) { return this->amount; }
 OrderBookType OrderBookEntry::getOrderType (void) { return this->orderType; }
+string OrderBookEntry::getProduct (void) { return this->product; }
+string OrderBookEntry::getTimeStamp (void) { return this->timeStamp; }
+
+void OrderBookEntry::display (void){
+    cout<<timeStamp << "," << product << "," << ((static_cast<int>(orderType)) ? "ask" : "bid") << "," << price << "," << amount << endl;
+    return;
+}

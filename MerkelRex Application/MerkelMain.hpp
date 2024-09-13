@@ -5,6 +5,7 @@
 #include <vector>
 #include "OrderBookEntry.hpp"
 #include "CSV Reader.hpp"
+#include "OrderBook.hpp"
 using namespace std;
 
 class MerkelMain{
@@ -15,7 +16,8 @@ class MerkelMain{
 4 : Place a bid
 5 : Print wallet
 6 : Continue )delimiter";
-    vector<OrderBookEntry> entries;
+    OrderBook orderbook {"data.csv"};
+    string currentTime;
 
 public:
     MerkelMain();
@@ -23,8 +25,7 @@ public:
     void printMenu(void);
     int getUserOption(void);
     OrderBookEntry BidAsk(int choice); //Taking Asking or Bidding values
-    void processUserOption(int choice, vector<OrderBookEntry> &entries);
+    void processUserOption(int choice);
     friend void display(const vector<OrderBookEntry> &entries);
     void printMarketStats(); //For Statistical Functions
 };
-void loadOrderBook(vector<OrderBookEntry> &entries, MerkelMain *thisptr);
