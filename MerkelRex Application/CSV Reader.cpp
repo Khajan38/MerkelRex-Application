@@ -4,18 +4,13 @@ using namespace std;
 
 CSV_Reader :: CSV_Reader (){}
 
-vector <string> CSV_Reader::tokenise (const string csvLine, const char seperator){
-     vector <string> tokens;
-     string token;
-     for (char i : csvLine){
-          if (i != seperator) token += i;
-          else {
-               if (token == "") continue;
-               tokens.push_back(token); 
-               token = "";
-          }
+vector<string> CSV_Reader::tokenise(const string csvLine, const char separator) {
+     vector<string> tokens; string token;
+     for (char i : csvLine) {
+          if (i != separator) token += i;
+          else if (!token.empty()) {tokens.push_back(token); token = "";}
      }
-     tokens.push_back(token);
+     if (!token.empty()) tokens.push_back(token);
      return tokens;
 }
 
@@ -45,14 +40,21 @@ OrderBookEntry CSV_Reader::stringToOrderBookEntry (const vector <string> &tokens
      return orderBookVecEle;
 }
 
-vector <OrderBookEntry> CSV_Reader::readCSV (const string csvFileInput){
-     vector <OrderBookEntry> entries;
-     ifstream csvFile {csvFileInput};
+vector<OrderBookEntry> CSV_Reader::readCSV(const string csvFileInput) {
+     vector<OrderBookEntry> entries;
+     ifstream csvFile{csvFileInput};
      if (!csvFile.is_open()) throw std::runtime_error("Could not open file: " + csvFileInput);
      string csvLine;
-     while(getline(csvFile, csvLine, '\n')){
-          OrderBookEntry entry = stringToOrderBookEntry(tokenise(csvLine, ','));
-          entries.push_back(entry);
+     int lineNumber = 0;  // For tracking line numbers
+     while (getline(csvFile, csvLine, '\n')) {
+          lineNumber++;
+          try {
+               OrderBookEntry entry = stringToOrderBookEntry(tokenise(csvLine, ','));
+               entries.push_back(entry);
+          }
+          catch (const std::exception& e) {
+               cerr << "Error processing line " << lineNumber << ": " << e.what() << endl;
+          }
      }
      return entries;
 }

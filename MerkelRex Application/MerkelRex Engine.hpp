@@ -1,0 +1,9 @@
+#pragma once
+#include <iostream>
+#include <vector>
+#include "OrderBookEntry.hpp"
+#include "OrderBook.hpp"
+using namespace std;
+
+void matchingEngine (OrderBook & orderbook, string currentTime);
+void newBidAskEngine (OrderBook & orderbook, string currentTime, OrderBookEntry * entry);

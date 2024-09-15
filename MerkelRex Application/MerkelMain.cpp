@@ -4,11 +4,13 @@
 #include "MerkelMain.hpp"
 using namespace std;
 
-MerkelMain::MerkelMain(){} 
-//Blank Constructor for MerkelMain
+MerkelMain::MerkelMain(string fileName): fileName(fileName) {
+    firstTime = orderbook.getEarliestTime();
+} //Constructor for MerkelMain
 
 void MerkelMain::init (){
     currentTime = orderbook.getEarliestTime();
+    matchingEngine(orderbook, firstTime);
     while (true){
         printMenu();
         int choice = getUserOption();
@@ -17,6 +19,7 @@ void MerkelMain::init (){
 }
 
 void MerkelMain::printMenu(void){
+    clearScreen();
     printLine();
     cout << "\n\t\t\t\t\t\t     MAIN MENU\n";
     printLine();
@@ -26,40 +29,15 @@ void MerkelMain::printMenu(void){
 }
 
 int MerkelMain::getUserOption(void){
-    int choice;
+    int iChoice; string sChoice;
     cout << "\nEnter your choice : ";
-    cin >> choice;
+    try{
+        cin >> sChoice;
+        iChoice = stoi(sChoice);
+    }
+    catch (const exception & e){cerr<<"\nError in input given : "<<e.what(); iChoice = 0;}
     cout << endl;
-    return choice;
-}
-
-OrderBookEntry MerkelMain::BidAsk(int choice){
-    string a, b, timeStamp, product, type;
-    double price, amount;
-    OrderBookType orderType;
-    if (choice == 3){
-        type = "Selling";
-        orderType = OrderBookType::ask;
-    }
-    else{
-        type = "Bidding", orderType = OrderBookType::bid;
-    }
-    cout << "\nEnter the Date of Purchase (Format : 2020/03/17) : ";
-    cin >> a;
-    cout << "Enter the Time of Purchase (Format : 17:01:24.884492) : ";
-    cin >> b;
-    timeStamp = a + " " + b;
-    cout << type << " of : ";
-    cin >> a;
-    cout << type << " with : ";
-    cin >> b;
-    product = a + "/" + b;
-    cout << "Value of " << a << " " << type << " : ";
-    cin >> price;
-    cout << "Value for " << b << " " << type << " : ";
-    cin >> amount;
-    OrderBookEntry temp(price, amount, timeStamp, product, orderType);
-    return temp;
+    return iChoice;
 }
 
 void MerkelMain::processUserOption(int choice){
@@ -72,17 +50,23 @@ void MerkelMain::processUserOption(int choice){
         cout << "You chose for printing Exhange Status..." << endl;
         printMarketStats();    
         cout << "\n\t\t\t\t\t     Press any key to continue " << flush;
-        char pause;
-        cin >> pause;
+        cin.ignore(INT_MAX, '\n');
+        cin.get();
         break;
-    case 3:
+    case 3:{
         cout << "You chose for placing an Ask..." << endl;
-        orderbook.BidAsk(BidAsk(choice));
+        OrderBookEntry entry = BidAsk(3);
+        OrderBookEntry * entryReference = orderbook.insertOrder(entry);
+        newBidAskEngine(orderbook, currentTime, entryReference);
         break;
-    case 4:
+    }
+    case 4:{
         cout << "You chose for placing a Bid..." << endl;
-        orderbook.BidAsk(BidAsk(choice));
+        OrderBookEntry entry = BidAsk(4);
+        OrderBookEntry * entryReference = orderbook.insertOrder(entry);
+        newBidAskEngine(orderbook, currentTime, entryReference);
         break;
+    }
     case 5:
         cout << "You chose for printing Wallet..." << endl;
         break;
@@ -91,6 +75,7 @@ void MerkelMain::processUserOption(int choice){
              << "Current Time is : "<<currentTime<<endl;
         currentTime = orderbook.getNextTime(currentTime);
         cout<< "Next Time is : "<<currentTime<<endl;
+        matchingEngine(orderbook, currentTime);
         break;
     default:{
         char exitChoice = 'Y';
@@ -107,7 +92,7 @@ void MerkelMain::processUserOption(int choice){
             exit(2);
         }
         else
-            cout << "\n\t\t\t\t       Continuing, Going to the next frame..." << endl;
+            cout << "\n\t\t\t\t       Continuing, Going to the Main Menu..." << endl;
     }
     }
     printLine();
@@ -125,31 +110,39 @@ void MerkelMain::printMarketStats(){
         vector <OrderBookEntry> matchedEntries = orderbook.getOrders(OrderBookType::ask, p, currentTime);
         cout<<"\tNo. of Asks -> "<<matchedEntries.size()<<endl
             <<"\tMax Ask -> "<<OrderBook::getHighPrice(matchedEntries)<<endl
-            <<"\tMin Ask -> "<<OrderBook::getLowPrice(matchedEntries)<<endl;
+            <<"\tMin Ask -> "<<OrderBook::getLowPrice(matchedEntries)<<endl
+            <<"\tSMA of Asks -> "<<OrderBook::simpleMovingAverage(matchedEntries)<<endl
+            <<"\tEMA of Asks -> "<<OrderBook::exponentialMovingAverage(matchedEntries)<<endl;
     }
     cout<<"\b\b"<<endl;
     return;
 }
 
-//display was made just to check if all entries were properly made
-void display(const vector<OrderBookEntry> &entries){
-    printLine();
-    cout << "\n\t\t\t\t\t\tORDER BOOK DATABASE\n";
-    printLine();
-    cout <<endl;
-    if (entries.size() == 0){
-        cout << "\nNo entries in Order Books DataBase..." << endl;
-        return;
+OrderBookEntry MerkelMain::BidAsk(int choice) {
+    string a, b, product, price, amount, orderType;
+    try{
+        if (choice == 3) orderType = "ask";
+        else orderType = "bid";
+        cout <<"\nYou are "<< orderType << "ing of : ";
+        cin >> a;
+        cout <<"You are "<< orderType << "ing with : ";
+        cin >> b;
+        product = a + "/" + b;
+        cout << "Value of " << a << " " << orderType << "ing : ";
+        cin >> price;
+        cout << "Value for " << b << " " << orderType << "ing : ";
+        cin >> amount;
+    } catch (const std::exception & e) {
+        // Handle the exception here
+        cerr <<endl<< "An error occurred: " << e.what() << endl;
     }
-    int count = 1;
-    cout << endl;
-    for (vector<OrderBookEntry>::const_iterator itr = entries.begin(); itr != entries.end(); itr++, count++)
-        cout << count << ". " << itr->timeStamp << "," << itr->product << "," << ((static_cast<int>(itr->orderType)) ? "ask" : "bid") << "," << itr->price << "," << itr->amount << endl;
-    cout << "\n\t\t\t\t        Press any key to continue " << flush;
-    char pause;
-    cin >> pause;
-    printLine();
-    sleepForSeconds(2);
-    clearScreen();
-    return;
+    vector<string> tokens {currentTime, product, orderType, price, amount};
+    try {
+        OrderBookEntry temp = CSV_Reader::stringToOrderBookEntry(tokens);
+        return temp;
+    } catch (const std::exception& e) {
+        cerr <<endl<< "Error creating OrderBookEntry: " << e.what() << endl;
+        // Handle the error as needed, e.g., return a default entry or terminate
+        return OrderBookEntry(); // Return a default or invalid entry
+    }
 }

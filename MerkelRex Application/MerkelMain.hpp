@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 #include "OrderBookEntry.hpp"
-#include "CSV Reader.hpp"
 #include "OrderBook.hpp"
+#include "MerkelRex Engine.hpp"
 using namespace std;
 
 class MerkelMain{
@@ -16,16 +16,16 @@ class MerkelMain{
 4 : Place a bid
 5 : Print wallet
 6 : Continue )delimiter";
-    OrderBook orderbook {"data.csv"};
-    string currentTime;
+    string fileName;
+    OrderBook orderbook {fileName};
+    string currentTime, firstTime;
 
 public:
-    MerkelMain();
+    MerkelMain(string fileName = "data.csv");
     void init(); //Call the Program from here
     void printMenu(void);
     int getUserOption(void);
-    OrderBookEntry BidAsk(int choice); //Taking Asking or Bidding values
+    OrderBookEntry BidAsk(int choice);
     void processUserOption(int choice);
-    friend void display(const vector<OrderBookEntry> &entries);
     void printMarketStats(); //For Statistical Functions
 };
