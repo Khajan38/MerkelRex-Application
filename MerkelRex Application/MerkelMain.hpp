@@ -6,6 +6,7 @@
 #include "OrderBookEntry.hpp"
 #include "OrderBook.hpp"
 #include "MerkelRex Engine.hpp"
+#include "Wallet.hpp"
 using namespace std;
 
 class MerkelMain{
