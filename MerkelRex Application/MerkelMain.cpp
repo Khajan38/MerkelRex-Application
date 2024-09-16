@@ -43,57 +43,25 @@ int MerkelMain::getUserOption(void){
 void MerkelMain::processUserOption(int choice){
     switch (choice){
     case 1:
-        cout << "Help - choose options from the menu" << endl
-             << "and follow the on screen instructions." << endl;
+        helpAndFeedback();
         break;
     case 2:
-        cout << "You chose for printing Exhange Status..." << endl;
-        printMarketStats();    
-        cout << "\n\t\t\t\t\t     Press any key to continue " << flush;
-        cin.ignore(INT_MAX, '\n');
-        cin.get();
+        exchangeStatus();
         break;
-    case 3:{
-        cout << "You chose for placing an Ask..." << endl;
-        OrderBookEntry entry = BidAsk(3);
-        OrderBookEntry * entryReference = orderbook.insertOrder(entry);
-        newBidAskEngine(orderbook, currentTime, entryReference);
+    case 3:
+        placeAsk();
         break;
-    }
-    case 4:{
-        cout << "You chose for placing a Bid..." << endl;
-        OrderBookEntry entry = BidAsk(4);
-        OrderBookEntry * entryReference = orderbook.insertOrder(entry);
-        newBidAskEngine(orderbook, currentTime, entryReference);
+    case 4:
+        placeBid();
         break;
-    }
     case 5:
-        cout << "You chose for printing Wallet..." << endl;
+        printWallet();
         break;
     case 6:
-        cout << "Continuing, Going to the next frame..." << endl<<endl
-             << "Current Time is : "<<currentTime<<endl;
-        currentTime = orderbook.getNextTime(currentTime);
-        cout<< "Next Time is : "<<currentTime<<endl;
-        matchingEngine(orderbook, currentTime);
+        continueToNextFrame();
         break;
-    default:{
-        char exitChoice = 'Y';
-        cout << "Enter a valid choice..." << endl
-             << endl
-             << "Do you want to exit from the program (Y/N)? : ";
-        cin >> exitChoice;
-        if (exitChoice == 89 || exitChoice == 121){ 
-            //exitChoice = 'Y' or 'y'
-            cout << "\n\t\t\t   Exiting, Thank you for using our MerkleRex application..." << endl;
-            printLine();
-            sleepForSeconds(2);
-            clearScreen();
-            exit(2);
-        }
-        else
-            cout << "\n\t\t\t\t       Continuing, Going to the Main Menu..." << endl;
-    }
+    default:
+        defaultCase();
     }
     printLine();
     sleepForSeconds(2);

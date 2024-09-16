@@ -6,4 +6,5 @@
 using namespace std;
 
 void matchingEngine (OrderBook & orderbook, string currentTime);
-void newBidAskEngine (OrderBook & orderbook, string currentTime, OrderBookEntry * entry);
+void newBidAskEngine (OrderBook & orderbook, string currentTime, OrderBookEntry * &entry);
+vector <string> callToknise (const string csvLine, const char seperator);

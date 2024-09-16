@@ -19,6 +19,7 @@ class MerkelMain{
 6 : Continue )delimiter";
     string fileName;
     OrderBook orderbook {fileName};
+    WalletClass Wallet;
     string currentTime, firstTime;
 
 public:
@@ -29,4 +30,13 @@ public:
     OrderBookEntry BidAsk(int choice);
     void processUserOption(int choice);
     void printMarketStats(); //For Statistical Functions
+
+    //Menu Options Functions
+    void helpAndFeedback(void);
+    void exchangeStatus(void);
+    void placeAsk(void);
+    void placeBid(void);
+    void printWallet(void);
+    void continueToNextFrame(void);
+    void defaultCase (void);
 };

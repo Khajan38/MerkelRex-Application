@@ -34,7 +34,7 @@ void OrderBookEntry::display (void){
 }
 
 bool OrderBookEntry::compareByTimeStamp (OrderBookEntry &e1, OrderBookEntry &e2){
-    return e1.timeStamp <= e2.timeStamp;
+    return e1.timeStamp < e2.timeStamp;
 }
 
 bool OrderBookEntry::compareByPriceNonDecreasing(const OrderBookEntry* e1, const OrderBookEntry* e2) {

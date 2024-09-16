@@ -28,12 +28,13 @@ void matchingEngine (OrderBook & orderbook, string currentTime){
      cin.get();
 }
 
-void newBidAskEngine (OrderBook & orderbook, string currentTime, OrderBookEntry * entry){
+void newBidAskEngine (OrderBook & orderbook, string currentTime, OrderBookEntry * &entry){
      if (entry == nullptr) return;
      vector <OrderBookEntry *> asks, bids;
      if (entry->getOrderType() == OrderBookType::ask) asks.push_back(entry);
      else bids.push_back(entry);
      vector <OrderBookEntry> sales = orderbook.matchAsksToBids(entry->getProduct(), currentTime, asks, bids);
+     cout<<endl<<"Sales :"<<endl;
      cout<<"\tNo. of Sales -> "<<sales.size()<<endl
           <<"\tMax Sale -> "<<OrderBook::getHighPrice(sales)<<endl
           <<"\tMin Sale -> "<<OrderBook::getLowPrice(sales)<<endl
@@ -43,4 +44,9 @@ void newBidAskEngine (OrderBook & orderbook, string currentTime, OrderBookEntry 
      cout << "\n\t\t\t\t\t     Press any key to continue ";
      cin.ignore(INT_MAX, '\n');
      cin.get();
+}
+
+vector <string> callToknise (const string csvLine, const char seperator){
+     vector <string> tokens = CSV_Reader::tokenise (csvLine, seperator);
+     return tokens;
 }
