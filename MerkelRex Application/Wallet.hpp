@@ -8,8 +8,8 @@ class WalletClass {
      public :
           WalletClass (); //Constructor
           void insertCurrency (string product, double amount);
+          void removeCurrency (string product, double amount);
           bool hasCurrency (string product, double amount);
-          bool removeCurrency (string product, double amount);
           bool canFullfillOrder (OrderBookEntry & order);
           string toString (void);
 };

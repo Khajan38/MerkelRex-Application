@@ -28,8 +28,8 @@ void matchingEngine (OrderBook & orderbook, string currentTime){
      cin.get();
 }
 
-void newBidAskEngine (OrderBook & orderbook, string currentTime, OrderBookEntry * &entry){
-     if (entry == nullptr) return;
+vector <double> newBidAskEngine (OrderBook & orderbook, string currentTime, OrderBookEntry * &entry){
+     if (entry == nullptr) return {0, 0};
      vector <OrderBookEntry *> asks, bids;
      if (entry->getOrderType() == OrderBookType::ask) asks.push_back(entry);
      else bids.push_back(entry);
@@ -40,10 +40,12 @@ void newBidAskEngine (OrderBook & orderbook, string currentTime, OrderBookEntry 
           <<"\tMin Sale -> "<<OrderBook::getLowPrice(sales)<<endl
           <<"\tSMA of Sales -> "<<OrderBook::simpleMovingAverage(sales)<<endl
           <<"\tEMA of Sales -> "<<OrderBook::exponentialMovingAverage(sales)<<endl;
-     printLine;
-     cout << "\n\t\t\t\t\t     Press any key to continue ";
-     cin.ignore(INT_MAX, '\n');
-     cin.get();
+     double totalAmount{0}, totalCurrAmount{0};
+     for (OrderBookEntry & e : sales) {
+          totalCurrAmount += e.getAmount() * e.getPrice();
+          totalAmount += e.getAmount();
+     }
+     return {totalAmount, totalCurrAmount};
 }
 
 vector <string> callToknise (const string csvLine, const char seperator){

@@ -21,10 +21,17 @@ void MerkelMain::placeAsk (){
      cout << "You chose for placing an Ask..." << endl;
      OrderBookEntry entry = BidAsk(3);
      if (Wallet.canFullfillOrder(entry)){
-          
           OrderBookEntry * entryReference = orderbook.insertOrder(entry);
-          newBidAskEngine(orderbook, currentTime, entryReference);
+          vector <double> sales = newBidAskEngine(orderbook, currentTime, entryReference);
+          vector <string> currencies = callToknise(entry.getProduct(), '/');
+          cout<<sales[0]<<" "<<sales[1]; cout<<endl;
+          Wallet.removeCurrency(currencies[0], sales[0]);
+          Wallet.insertCurrency(currencies[1], sales[1]);
      }
+     printLine;
+     cout << "\n\t\t\t\t\t     Press any key to continue ";
+     cin.ignore(INT_MAX, '\n');
+     cin.get();
      return;
 }
 
@@ -33,13 +40,24 @@ void MerkelMain::placeBid(){
      OrderBookEntry entry = BidAsk(4);
      if (Wallet.canFullfillOrder(entry)){
           OrderBookEntry * entryReference = orderbook.insertOrder(entry);
-          newBidAskEngine(orderbook, currentTime, entryReference);
+          vector <double> sales = newBidAskEngine(orderbook, currentTime, entryReference);
+          vector <string> currencies = callToknise(entry.getProduct(), '/');
+          cout<<sales[0]<<" "<<sales[1]; cout<<endl;
+          Wallet.removeCurrency(currencies[1], sales[1]);
+          Wallet.insertCurrency(currencies[0], sales[0]);
      }
+     printLine;
+     cout << "\n\t\t\t\t\t     Press any key to continue ";
+     cin.ignore(INT_MAX, '\n');
+     cin.get();
      return;
 }
 
 void MerkelMain::printWallet(){
-     cout << "You chose for printing Wallet..." << endl;
+     cout << "Wallet : " << endl;
+     string currencies = Wallet.toString();
+     if (currencies == "") cout<<"Wallet is Empty...";
+     else cout<<endl<<currencies;
      return;
 }
 

@@ -3,42 +3,34 @@
 using namespace std;
 
 WalletClass::WalletClass (){
-     insertCurrency("BTC", 0.5);
-     insertCurrency("ETC", 10.0);
-     insertCurrency("DOGE", 1500.0);
-     insertCurrency("USTD", 500.0);
+     wallet["BTC"] = 0.5;
+     wallet["ETH"] =  10.0;
+     wallet["DOGE"] =  1500.0;
+     wallet["USTD"] =  500.0;
 }
 
 void WalletClass::insertCurrency (string product, double amount){
-     try{
-          if (amount <= 0) throw invalid_argument("Invalid value for amount"); 
-          if (wallet.count(product)) wallet[product] += amount;
-          else wallet[product] = amount;
-          cout<<amount<<" "<<product<<" credited to Wallet..."<<endl;
-          return;
-     }
-     catch(const invalid_argument& e) {cerr<<"Error : "<<e.what()<<std::endl; return;}
+     if (wallet.count(product)) wallet[product] += amount;
+     else wallet[product] = amount;
+     cout<<amount<<" "<<product<<" credited to Wallet..."<<endl;
+     return;
 }
 
-bool WalletClass::removeCurrency (string product, double amount){
-     try{
-          if (amount <= 0) throw invalid_argument("Invalid value for amount"); 
-          if (hasCurrency(product, amount)) {
-               cout<<amount<<" "<<product<<" debited from Wallet..."<<endl;
-               wallet[product] -= amount; 
-               return true;
-          }
-          return false;
-     }
-     catch(const invalid_argument& e) {cerr<<"Error : "<<e.what()<<std::endl; return false;}
+void WalletClass::removeCurrency (string product, double amount){
+     wallet[product] -= amount; 
+     cout<<amount<<" "<<product<<" debited from Wallet..."<<endl;
 }
 
 bool WalletClass::hasCurrency (string product, double amount){
-     if (wallet.count(product) && wallet[product] >= amount){
-          cout<<wallet[product]<<" "<<product<<" present in Wallet..."<<endl;
-          return true;
+     try{
+          if (amount <= 0) throw invalid_argument("Invalid value for amount"); 
+          if (wallet.count(product) && wallet[product] >= amount){
+               cout<<wallet[product]<<" "<<product<<" present in Wallet..."<<endl;
+               return true;
+          }
+          else{cout<<"Not enough "<<product<<" in Wallet..."<<endl; return false;}
      }
-     else{cout<<"Not enough "<<product<<" in Wallet..."<<endl; return false;}
+     catch(const invalid_argument& e) {cerr<<"Error : "<<e.what()<<std::endl; return false;}
 }
 
 bool WalletClass::canFullfillOrder (OrderBookEntry & entry){
