@@ -2,21 +2,24 @@
 
 #include <iostream>
 #include "MerkelMain.hpp"
-#include "Statistical Functions.hpp"
 using namespace std;
 
-MerkelMain::MerkelMain(){} 
-//Blank Constructor for MerkelMain
+MerkelMain::MerkelMain(string fileName): fileName(fileName) {
+    firstTime = orderbook.getEarliestTime();
+} //Constructor for MerkelMain
 
 void MerkelMain::init (){
+    currentTime = orderbook.getEarliestTime();
+    matchingEngine(orderbook, firstTime);
     while (true){
         printMenu();
         int choice = getUserOption();
-        processUserOption(choice, entries);
+        processUserOption(choice);
     }
 }
 
 void MerkelMain::printMenu(void){
+    clearScreen();
     printLine();
     cout << "\n\t\t\t\t\t\t     MAIN MENU\n";
     printLine();
@@ -26,127 +29,88 @@ void MerkelMain::printMenu(void){
 }
 
 int MerkelMain::getUserOption(void){
-    int choice;
+    int iChoice; string sChoice;
     cout << "\nEnter your choice : ";
-    cin >> choice;
+    try{
+        cin >> sChoice;
+        iChoice = stoi(sChoice);
+    }
+    catch (const exception & e){cerr<<"\nError in input given : "<<e.what(); iChoice = 0;}
     cout << endl;
-    return choice;
+    return iChoice;
 }
 
-OrderBookEntry MerkelMain::BidAsk(int choice){
-    string a, b, timeStamp, product, type;
-    double price, amount;
-    OrderBookType orderType;
-    if (choice == 3){
-        type = "Selling";
-        orderType = OrderBookType::ask;
-    }
-    else{
-        type = "Bidding", orderType = OrderBookType::bid;
-    }
-    cout << "\nEnter the Date of Purchase (Format : 2020/03/17) : ";
-    cin >> a;
-    cout << "Enter the Time of Purchase (Format : 17:01:24.884492) : ";
-    cin >> b;
-    timeStamp = a + " " + b;
-    cout << type << " of : ";
-    cin >> a;
-    cout << type << " with : ";
-    cin >> b;
-    product = a + "/" + b;
-    cout << "Value of " << a << " " << type << " : ";
-    cin >> price;
-    cout << "Value for " << b << " " << type << " : ";
-    cin >> amount;
-    OrderBookEntry temp(price, amount, timeStamp, product, orderType);
-    return temp;
-}
-
-void MerkelMain::processUserOption(int choice, vector<OrderBookEntry> &entries){
+void MerkelMain::processUserOption(int choice){
     switch (choice){
     case 1:
-        cout << "Help - choose options from the menu" << endl
-             << "and follow the on screen instructions." << endl;
+        helpAndFeedback();
         break;
     case 2:
-        cout << "You chose for printing Exhange Status..." << endl;
+        exchangeStatus();
         break;
     case 3:
-        cout << "You chose for placing an Ask..." << endl;
-        entries.push_back(MerkelMain::BidAsk(choice));
+        placeAsk();
         break;
     case 4:
-        cout << "You chose for placing a Bid..." << endl;
-        entries.push_back(BidAsk(choice));
+        placeBid();
         break;
     case 5:
-        cout << "You chose for printing Wallet..." << endl;
+        printWallet();
         break;
     case 6:
-        cout << "Continuing, Going to the next frame..." << endl;
+        continueToNextFrame();
         break;
-    default:{
-        char exitChoice = 'Y';
-        cout << "Enter a valid choice..." << endl
-             << endl
-             << "Do you want to exit from the program (Y/N)? : ";
-        cin >> exitChoice;
-        if (exitChoice == 89 || exitChoice == 121){ 
-            //exitChoice = 'Y' or 'y'
-            cout << "\n\t\t\t   Exiting, Thank you for using our MerkleRex application..." << endl;
-            printLine();
-            sleepForSeconds(2);
-            clearScreen();
-            exit(2);
-        }
-        else
-            cout << "\n\t\t\t\t       Continuing, Going to the next frame..." << endl;
+    default:
+        defaultCase();
     }
-    }
-    printLine();
-    char menuChoice{'M'};
-    cout << "\n\t\t     Press M to goto Menu or any other key to look Order Book DataBase : ";
-    cin >> menuChoice;
-    sleepForSeconds(2);
-    clearScreen();
-    if (menuChoice != 'M') loadOrderBook(entries, this);
-    return;
-}
-
-void loadOrderBook (const vector <OrderBookEntry> & entries, MerkelMain * thisptr){
-    printLine();
-    cout << "\n\t\t\t\t\t\tORDER BOOK DATABASE\n";
-    printLine();
-    cout <<endl;
-    display(entries);
-    thisptr->printMarketStats();
-    cout << "\n\t\t\t\t        Press any key to continue " << flush;
-    char pause;
-    cin >> pause;
     printLine();
     sleepForSeconds(2);
     clearScreen();
-}
-
-void display(const vector<OrderBookEntry> &entries){
-    if (entries.size() == 0){
-        cout << "\nNo entries in Order Books DataBase..." << endl;
-        return;
-    }
-    //2020/03/17 17:01:24.884492,ETH/BTC,bid,0.02186299,0.1
-    //2020/03/17 17:01:24.884492,BTC/ETH,ask,0.1,0.02186299
-    int count = 1;
-    cout << endl;
-    for (vector<OrderBookEntry>::const_iterator itr = entries.begin(); itr != entries.end(); itr++, count++)
-        cout << count << ". " << itr->timeStamp << "," << itr->product << "," << ((static_cast<int>(itr->orderType)) ? "ask" : "bid") << "," << itr->price << "," << itr->amount << endl;
     return;
 }
 
 void MerkelMain::printMarketStats(){
-    cout << "\nMarket Statistics : "<<endl;
-    cout << "\nAverage Price : " << computeAveragePrice(entries) << endl
-         << "Highest Price : " << computeHighPrice(entries) << endl
-         << "Lowest Price : " << computeLowPrice(entries) << endl
-         << "Price Spread : " << computePriceSpread(entries) << endl;
+    cout << "\n\t\t\t\t   Market Statistics of "<<currentTime<<endl;
+    cout<<"\nProducts : ";
+    vector <string> productList = orderbook.getKnownProducts();
+    for (string & p : productList){
+        cout<<p<<" :"<<endl;
+        vector <OrderBookEntry> matchedEntries = orderbook.getOrders(OrderBookType::ask, p, currentTime);
+        cout<<"\tNo. of Asks -> "<<matchedEntries.size()<<endl
+            <<"\tMax Ask -> "<<OrderBook::getHighPrice(matchedEntries)<<endl
+            <<"\tMin Ask -> "<<OrderBook::getLowPrice(matchedEntries)<<endl
+            <<"\tSMA of Asks -> "<<OrderBook::simpleMovingAverage(matchedEntries)<<endl
+            <<"\tEMA of Asks -> "<<OrderBook::exponentialMovingAverage(matchedEntries)<<endl;
+    }
+    cout<<"\b\b"<<endl;
     return;
+}
+
+OrderBookEntry MerkelMain::BidAsk(int choice) {
+    string a, b, product, price, amount, orderType;
+    try{
+        if (choice == 3) orderType = "ask";
+        else orderType = "bid";
+        cout <<"\nYou are "<< orderType << "ing of : ";
+        cin >> a;
+        cout <<"You are "<< orderType << "ing with : ";
+        cin >> b;
+        product = a + "/" + b;
+        cout << "Value of " << a << " " << orderType << "ing : ";
+        cin >> price;
+        cout << "Value for " << b << " " << orderType << "ing : ";
+        cin >> amount;
+    } catch (const std::exception & e) {
+        // Handle the exception here
+        cerr <<endl<< "An error occurred: " << e.what() << endl;
+    }
+    vector<string> tokens {currentTime, product, orderType, price, amount};
+    try {
+        OrderBookEntry temp = CSV_Reader::stringToOrderBookEntry(tokens);
+        return temp;
+    } catch (const std::exception& e) {
+        cerr <<endl<< "Error creating OrderBookEntry: " << e.what() << endl;
+        // Handle the error as needed, e.g., return a default entry or terminate
+        return OrderBookEntry(); // Return a default or invalid entry
+    }
 }
