@@ -24,7 +24,7 @@ void MerkelMain::placeAsk (){
           OrderBookEntry * entryReference = orderbook.insertOrder(entry);
           vector <double> sales = newBidAskEngine(orderbook, currentTime, entryReference);
           vector <string> currencies = callToknise(entry.getProduct(), '/');
-          cout<<sales[0]<<" "<<sales[1]; cout<<endl;
+          cout<<endl; //Formatting
           Wallet.removeCurrency(currencies[0], sales[0]);
           Wallet.insertCurrency(currencies[1], sales[1]);
      }
@@ -42,7 +42,7 @@ void MerkelMain::placeBid(){
           OrderBookEntry * entryReference = orderbook.insertOrder(entry);
           vector <double> sales = newBidAskEngine(orderbook, currentTime, entryReference);
           vector <string> currencies = callToknise(entry.getProduct(), '/');
-          cout<<sales[0]<<" "<<sales[1]; cout<<endl;
+          cout<<endl; //Formatting
           Wallet.removeCurrency(currencies[1], sales[1]);
           Wallet.insertCurrency(currencies[0], sales[0]);
      }
