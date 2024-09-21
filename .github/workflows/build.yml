@@ -10,29 +10,28 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # The OS for the build environment
+    runs-on: windows-latest  # Use Windows for compatibility with MinGW
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up CMake
-      run: sudo apt-get install -y cmake make g++
-
-    - name: Create build directory
-      run: mkdir build && cd build
-
-    - name: Configure the project with CMake
+    - name: Set up MinGW
       run: |
-        cd build
-        cmake ..
+        choco install mingw
+
+    - name: Add MinGW to PATH
+      run: |
+        echo "C:/tools/mingw64/bin" >> $env:GITHUB_PATH
+
+    - name: Run CMake to configure the build
+      run: |
+        cmake -G "MinGW Makefiles" -S . -B build
 
     - name: Build the project
       run: |
-        cd build
-        cmake --build .
+        cmake --build build
 
-    - name: Run the application (optional)
+    - name: Run the executable (optional)
       run: |
-        cd build
-        ./MerkelRex  # Make sure the executable name matches your project
+        build/bin/MerkelRex.exe  # Adjust if your binary is in a different location
