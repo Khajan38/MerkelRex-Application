@@ -1,0 +1,38 @@
+name: Build MerkelRex Application
+
+on:
+  push:
+    branches:
+      - main  # Run on push to the main branch
+  pull_request:
+    branches:
+      - main  # Run on pull requests to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # The OS for the build environment
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up CMake
+      run: sudo apt-get install -y cmake make g++
+
+    - name: Create build directory
+      run: mkdir build && cd build
+
+    - name: Configure the project with CMake
+      run: |
+        cd build
+        cmake ..
+
+    - name: Build the project
+      run: |
+        cd build
+        cmake --build .
+
+    - name: Run the application (optional)
+      run: |
+        cd build
+        ./MerkelRex  # Make sure the executable name matches your project
