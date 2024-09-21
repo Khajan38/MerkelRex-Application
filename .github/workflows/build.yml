@@ -1,0 +1,37 @@
+name: Build MerkelRex Application
+
+on:
+  push:
+    branches:
+      - main  # Run on push to the main branch
+  pull_request:
+    branches:
+      - main  # Run on pull requests to the main branch
+
+jobs:
+  build:
+    runs-on: windows-latest  # Use Windows for compatibility with MinGW
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up MinGW
+      run: |
+        choco install mingw
+
+    - name: Add MinGW to PATH
+      run: |
+        echo "C:/tools/mingw64/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding ascii -Append
+
+    - name: Run CMake to configure the build
+      run: |
+        cmake -G "MinGW Makefiles" -S . -B build
+
+    - name: Build the project
+      run: |
+        cmake --build build
+
+    - name: Run the executable (optional)
+      run: |
+        build/bin/MerkelRex.exe  # Adjust if your binary is in a different location
