@@ -7,13 +7,10 @@ void matchingEngine (OrderBook & orderbook, string currentTime){
      cout<<"\nDo you want to run the Matching Engine to clear previous (if any) Asks and Bids (Y/N) : ";
      cin>> choice;
      if (choice == 'N') return;
-     clearScreen();
-     printLine();
-     cout << "\n\t\t\t\t\tMATCHING PENDING BIDS AND BIDS\n";
-     printLine(); cout<<endl;
+     Display::Header("MATCHING ENGINE : MATCHING PENDING BIDS AND BIDS");
      vector <string> products = orderbook.getKnownProducts();
      for (string & product : products){
-          cout<<product<<" :"<<endl;
+          cout<<endl<<product<<" :"<<endl;
           vector <OrderBookEntry *> asks, bids;
           vector <OrderBookEntry> sales = orderbook.matchAsksToBids(product, currentTime, asks, bids);
           cout<<"\tNo. of Sales -> "<<sales.size()<<endl
@@ -22,10 +19,8 @@ void matchingEngine (OrderBook & orderbook, string currentTime){
             <<"\tSMA of Sales -> "<<OrderBook::simpleMovingAverage(sales)<<endl
             <<"\tEMA of Sales -> "<<OrderBook::exponentialMovingAverage(sales)<<endl;
      }
-     printLine;
-     cout << "\n\t\t\t\t\t     Press any key to continue ";
      cin.ignore(INT_MAX, '\n');
-     cin.get();
+     Display::Bottom_Line(3);
 }
 
 vector <double> newBidAskEngine (OrderBook & orderbook, string currentTime, OrderBookEntry * &entry){
@@ -34,12 +29,12 @@ vector <double> newBidAskEngine (OrderBook & orderbook, string currentTime, Orde
      if (entry->getOrderType() == OrderBookType::ask) asks.push_back(entry);
      else bids.push_back(entry);
      vector <OrderBookEntry> sales = orderbook.matchAsksToBids(entry->getProduct(), currentTime, asks, bids);
-     cout<<endl<<"Sales :"<<endl;
-     cout<<"\tNo. of Sales -> "<<sales.size()<<endl
-          <<"\tMax Sale -> "<<OrderBook::getHighPrice(sales)<<endl
-          <<"\tMin Sale -> "<<OrderBook::getLowPrice(sales)<<endl
-          <<"\tSMA of Sales -> "<<OrderBook::simpleMovingAverage(sales)<<endl
-          <<"\tEMA of Sales -> "<<OrderBook::exponentialMovingAverage(sales)<<endl;
+     cout<<endl<<padding("SALES", consoleWidth)<<"SALES"<<endl<<endl;
+     cout<<"No. of Sales -> "<<sales.size()<<endl
+          <<"Max Sale -> "<<OrderBook::getHighPrice(sales)<<endl
+          <<"Min Sale -> "<<OrderBook::getLowPrice(sales)<<endl
+          <<"SMA of Sales -> "<<OrderBook::simpleMovingAverage(sales)<<endl
+          <<"EMA of Sales -> "<<OrderBook::exponentialMovingAverage(sales)<<endl;
      double totalAmount{0}, totalCurrAmount{0};
      for (OrderBookEntry & e : sales) {
           totalCurrAmount += e.getAmount() * e.getPrice();

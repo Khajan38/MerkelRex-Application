@@ -12,32 +12,9 @@ void MerkelMain::init (){
     currentTime = orderbook.getEarliestTime();
     matchingEngine(orderbook, firstTime);
     while (true){
-        printMenu();
-        int choice = getUserOption();
+        int choice = Display::Main_Menu();
         processUserOption(choice);
     }
-}
-
-void MerkelMain::printMenu(void){
-    clearScreen();
-    printLine();
-    cout << "\n\t\t\t\t\t\t     MAIN MENU\n";
-    printLine();
-    cout << "\n\n"
-         << Menu << endl;
-    return;
-}
-
-int MerkelMain::getUserOption(void){
-    int iChoice; string sChoice;
-    cout << "\nEnter your choice : ";
-    try{
-        cin >> sChoice;
-        iChoice = stoi(sChoice);
-    }
-    catch (const exception & e){cerr<<"\nError in input given : "<<e.what(); iChoice = 0;}
-    cout << endl;
-    return iChoice;
 }
 
 void MerkelMain::processUserOption(int choice){
@@ -60,21 +37,20 @@ void MerkelMain::processUserOption(int choice){
     case 6:
         continueToNextFrame();
         break;
+    case 7:
+        Display::Exiting_Window();
     default:
         defaultCase();
     }
-    printLine();
-    sleepForSeconds(2);
-    clearScreen();
+    if (choice != 6) Display::Bottom_Line(2);
     return;
 }
 
 void MerkelMain::printMarketStats(){
-    cout << "\n\t\t\t\t   Market Statistics of "<<currentTime<<endl;
-    cout<<"\nProducts : ";
+    cout <<endl<<padding("MARKET STATISTICS OF "+currentTime, consoleWidth)<<"MARKET STATISTICS OF "<<currentTime<<endl;
     vector <string> productList = orderbook.getKnownProducts();
     for (string & p : productList){
-        cout<<p<<" :"<<endl;
+        cout<<endl<<p<<" :"<<endl;
         vector <OrderBookEntry> matchedEntries = orderbook.getOrders(OrderBookType::ask, p, currentTime);
         cout<<"\tNo. of Asks -> "<<matchedEntries.size()<<endl
             <<"\tMax Ask -> "<<OrderBook::getHighPrice(matchedEntries)<<endl
@@ -82,7 +58,6 @@ void MerkelMain::printMarketStats(){
             <<"\tSMA of Asks -> "<<OrderBook::simpleMovingAverage(matchedEntries)<<endl
             <<"\tEMA of Asks -> "<<OrderBook::exponentialMovingAverage(matchedEntries)<<endl;
     }
-    cout<<"\b\b"<<endl;
     return;
 }
 
@@ -96,9 +71,9 @@ OrderBookEntry MerkelMain::BidAsk(int choice) {
         cout <<"You are "<< orderType << "ing with : ";
         cin >> b;
         product = a + "/" + b;
-        cout << "Value of " << a << " " << orderType << "ing : ";
+        cout << "Price of " <<b<<" per "<< a << " " << orderType << "ing : ";
         cin >> price;
-        cout << "Value for " << b << " " << orderType << "ing : ";
+        cout << "Amount of "<<a<<" " << orderType << "ed : ";
         cin >> amount;
     } catch (const std::exception & e) {
         // Handle the exception here

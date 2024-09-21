@@ -5,20 +5,15 @@
 using namespace std;
 
 int main(){
-    clearScreen();
-    printLine();
-    cout << "\n\t\t\t\t\tWELCOME TO MERKELREX APPLICATION\n";
-    printLine(); cout<<endl;
+    Display::Header("WELCOME TO MERKELREX APPLICATION");
     string fileName;
-    cout<<"Enter Database Name and Location (D:\\Tanuj\\...) or Press Enter to Proceed with Default Database? : ";
+    cout<<"\nEnter Database Name and Location (D:\\Tanuj\\...) or Press Enter to Proceed with Default Database? : ";
     getline(cin, fileName);
     cout<<"\nUsing Database : ";
     if (fileName == "") {cout<<"Default -> data.csv\n"<<endl; fileName = "data.csv";}
     else cout<<fileName<<endl;
     MerkelMain app(fileName);
-    printLine();
-    cout << "\n\t\t\t\t\t     Press any key to continue ";
-    cin.get();
+    Display::Bottom_Line(3);
     app.init();
     return 0;
 }

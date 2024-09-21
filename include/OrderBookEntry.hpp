@@ -7,12 +7,6 @@
 #include <vector>
 using namespace std;
 
-//Some needed functions
-string line();
-void printLine();
-void sleepForSeconds(int timed);
-void clearScreen();
-
 enum class OrderBookType : int{bid = 0, ask = 1, sale = 2};
 
 class OrderBookEntry{

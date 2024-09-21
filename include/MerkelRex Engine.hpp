@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include "Display Basics.hpp"
 #include "OrderBookEntry.hpp"
 #include "OrderBook.hpp"
 using namespace std;

@@ -34,45 +34,6 @@ vector <OrderBookEntry *> OrderBook::getOrdersReference (OrderBookType type, str
      return matchedEntries;
 }
 
-double OrderBook::getHighPrice (vector <OrderBookEntry> &matchedEntries){
-     if (matchedEntries.empty()) return 0.0;
-     double maxPrice {matchedEntries[0].getPrice()};
-     for (OrderBookEntry & entry : matchedEntries){
-          double curPrice = entry.getPrice();
-          if (curPrice >  maxPrice) maxPrice = curPrice;
-     }
-     return maxPrice;
-}
-
-double OrderBook::getLowPrice (vector <OrderBookEntry> &matchedEntries){
-     if (matchedEntries.empty()) return 0.0;
-     double minPrice {matchedEntries[0].getPrice()};
-     for (OrderBookEntry & entry : matchedEntries){
-          double curPrice = entry.getPrice();
-          if (curPrice <  minPrice) minPrice = curPrice;
-     }
-     return minPrice;
-}
-
-double OrderBook::simpleMovingAverage (vector <OrderBookEntry> &matchedEntries){
-     if (matchedEntries.empty()) return 0.0;
-     double averagePrice {0};
-     for (OrderBookEntry & entry : matchedEntries)
-          averagePrice += entry.getPrice();
-     averagePrice /= matchedEntries.size();
-     return averagePrice;
-}
-
-double OrderBook::exponentialMovingAverage (vector <OrderBookEntry> &matchedEntries){
-     if (matchedEntries.empty()) return 0.0;
-     int size = matchedEntries.size(); 
-     double alpha = 2.0/(size + 1); 
-     double EMA = matchedEntries[0].getPrice();
-     for (int i = 1; i < size; ++i)
-          EMA = alpha * (matchedEntries[i].getPrice() - EMA) + EMA;
-     return EMA;
-}
-
 string OrderBook::getEarliestTime (){
      return entries[0].getTimeStamp();
 }
@@ -115,9 +76,8 @@ vector <OrderBookEntry> OrderBook::matchAsksToBids(string product, string timeSt
 
           for (int j = 0; j < bidsSize; j++){
                double curBidPrice {(bids[j])->getPrice()}, curBidAmount {(bids[j])->getAmount()};
-
+               if (curBidAmount == 0) continue; // Skip bids that are already fully processed
                if (curBidPrice >= curAskPrice){
-                    if (curBidAmount == 0) continue; // Skip bids that are already fully processed
                     double salePrice {bids[j]->getPrice()}, saleAmount; //Sale happens at Bidding amount
 
                     if (curBidAmount == curAskAmount){
@@ -128,7 +88,7 @@ vector <OrderBookEntry> OrderBook::matchAsksToBids(string product, string timeSt
                          break;
                     }
 
-                    else if (bids[j]->getAmount() >= asks[i]->getAmount()){
+                    else if (curBidAmount > curAskAmount){
                          saleAmount = curAskAmount;
                          sales.push_back(OrderBookEntry{timeStamp, product, OrderBookType::sale, salePrice, saleAmount});
                          bids[j]->setAmount(curBidAmount - curAskAmount);

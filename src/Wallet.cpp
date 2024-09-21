@@ -3,34 +3,34 @@
 using namespace std;
 
 WalletClass::WalletClass (){
-     wallet["BTC"] = 0.5;
-     wallet["ETH"] =  10.0;
-     wallet["DOGE"] =  1500.0;
-     wallet["USTD"] =  500.0;
+     wallet["BTC"] = 0.523798;
+     wallet["ETH"] =  18.823674;
+     wallet["DOGE"] =  1523.239622;
+     wallet["USTD"] =  597.023246;
 }
 
 void WalletClass::insertCurrency (string product, double amount){
      if (wallet.count(product)) wallet[product] += amount;
      else wallet[product] = amount;
-     cout<<amount<<" "<<product<<" credited to Wallet..."<<endl;
+     cout<<endl<<amount<<" "<<product<<" credited to Wallet..."<<endl;
      return;
 }
 
 void WalletClass::removeCurrency (string product, double amount){
      wallet[product] -= amount; 
-     cout<<amount<<" "<<product<<" debited from Wallet..."<<endl;
+     cout<<endl<<amount<<" "<<product<<" debited from Wallet..."<<endl;
 }
 
 bool WalletClass::hasCurrency (string product, double amount){
      try{
           if (amount <= 0) throw invalid_argument("Invalid value for amount"); 
           if (wallet.count(product) && wallet[product] >= amount){
-               cout<<wallet[product]<<" "<<product<<" present in Wallet..."<<endl;
+               cout<<endl<<wallet[product]<<" "<<product<<" present in Wallet..."<<endl;
                return true;
           }
-          else{cout<<"Not enough "<<product<<" in Wallet..."<<endl; return false;}
+          else{cout<<endl<<"Not enough "<<product<<" in Wallet..."<<endl; return false;}
      }
-     catch(const invalid_argument& e) {cerr<<"Error : "<<e.what()<<std::endl; return false;}
+     catch(const invalid_argument& e) {cerr<<"\nError : "<<e.what()<<std::endl; return false;}
 }
 
 bool WalletClass::canFullfillOrder (OrderBookEntry & entry){
@@ -50,7 +50,10 @@ bool WalletClass::canFullfillOrder (OrderBookEntry & entry){
 
 string WalletClass::toString (void){
      string currencies;
-     for (const pair <const string, double> & currency : wallet)
-          currencies += (currency.first + " : " + to_string(currency.second) + "\n");
+     string paddingRows = padding("|   CURRENCIES   |       AMOUNT       |", consoleWidth);
+     for (const pair <const string, double> & currency : wallet){
+          string adder = format("{}|   {:10}   |   {:>14.6f}   |\n", paddingRows, currency.first, currency.second);
+          currencies += adder;
+     }
      return currencies;
 }
