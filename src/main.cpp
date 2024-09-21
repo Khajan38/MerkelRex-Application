@@ -7,7 +7,7 @@ using namespace std;
 int main(){
     Display::Header("WELCOME TO MERKELREX APPLICATION");
     string fileName;
-    cout<<"\nEnter Database Name and Location (D:\\Tanuj\\...) or Press Enter to Proceed with Default Database? : ";
+    cout<<"\nEnter Database Name and Location (D:\\...) or Press Enter to Proceed with Default Database? : ";
     getline(cin, fileName);
     cout<<"\nUsing Database : ";
     if (fileName == "") {cout<<"Default -> data.csv\n"<<endl; fileName = "data/data.csv";}

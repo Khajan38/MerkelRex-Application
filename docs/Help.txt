@@ -1,42 +1,51 @@
-A. Introduction
+#Introduction #
 
-Welcome to the MerkelRex Application — a project developed as part of the "Object-Oriented Programming" specialization from Coursera, created during my 3rd semester of B.Tech. This application acts as a matching engine to facilitate trading operations using order books, with features to place bids, asks, and monitor wallet balances.
+-> Welcome to the MerkelRex Application - a project developed as part of the "Object-Oriented Programming" specialization from Coursera, created during my 2nd Year of B.Tech. C.S.E. 
 
-The purpose of this program is to simulate the process of trading between assets, offering users insights into how exchanges work by allowing them to place bids and asks, and view the state of their virtual wallet over time.
+-> This application acts as a matching engine to facilitate trading operations using order books, with features to place bids, asks, and monitor wallet balances.
 
-B. Menu Options Details
+-> The purpose of this program is to:
+   * Simulate the process of trading between assets, 
+   * Offering users insights into how exchanges work by allowing them to place bids and asks
+   * View the state of their virtual wallet over time.
+
+#Menu Options Details #
 
 Below is a detailed description of the menu options available in the program:
 
-Help and Feedback (Option 1):
-Displays this help guide along with the options to provide feedback. It contains instructions for using the application, including contact information for reporting issues.
+-> Help and Feedback (Option 1):
+  * Displays this help guide along with the options to provide feedback. 
+  * It contains instructions for using the application, including contact information for reporting issues.
 
-Exchange Status (Option 2):
-Prints the current status of the exchange, including information such as the latest bids, asks, and their respective prices. It gives an overview of the order book at the current timestamp.
+-> Exchange Status (Option 2):
+  * Prints the current status of the exchange, including information such as the latest bids, asks, and their respective prices. 
+  * It gives an overview of the order book at the current timestamp.
 
-Place Ask (Option 3):
-Allows the user to place an "ask" — offering a certain amount of an asset at a particular price. The ask will be matched with available bids if suitable ones exist, otherwise, it is added to the order book.
+-> Place Ask (Option 3):
+  * Allows the user to place an "ask" — offering a certain amount of an asset at a particular price.
+  * The ask will be matched with available bids if suitable ones exist, otherwise, it is added to the order book.
 
-Place Bid (Option 4):
-Enables the user to place a "bid" — requesting to buy a specific quantity of an asset at a defined price. This bid will either match with existing asks or remain pending until a corresponding ask appears.
+-> Place Bid (Option 4):
+  * Enables the user to place a "bid" — requesting to buy a specific quantity of an asset at a defined price. 
+  * This bid will either match with existing asks or remain pending until a corresponding ask appears.
 
-Print Wallet (Option 5):
-Prints the user's wallet, showing the current balance of all available assets. This function is crucial for tracking assets and cash balances.
+-> Print Wallet (Option 5):
+  * Prints the user's wallet, showing the current balance of all available assets. 
+  * This function is crucial for tracking assets and cash balances.
 
-Continue to Next Frame (Option 6):
-Advances the simulation to the next frame or timestamp, updating the order book, executing any matching bids/asks, and reflecting changes in the user's wallet.
+-> Continue to Next Frame (Option 6):
+  * Advances the simulation to the next frame or timestamp, updating the order book, executing any matching bids/asks, and reflecting changes in the user's wallet.
 
-Exit (Option 7):
-Exits the program. The user can exit at any time, but changes will not be saved.
+-> Exit (Option 7):
+  * Exits the program. The user can exit at any time, but changes will not be saved.
 
 If you select any option that is not on this list, you will be notified with a default message, and the menu will display again.
 
-C. Usage Examples
+#Usage Examples #
 
 Below are a few examples of how to interact with the program:
 
-Example 1: Placing an Ask
-When prompted to place an ask (option 3), you will be asked for the following:
+-> Example 1: Placing an Ask - When prompted to place an ask (option 3), you will be asked for the following:
 
 Asset: BTC
 Amount: 2
@@ -44,13 +53,11 @@ Price: 50000
 
 This would place an ask to sell 2 BTC at the price of 50,000 units of the base currency.
 
-Example 2: Viewing Wallet
-Select option 5 to view your wallet, and the output may look like this:
+-> Example 2: Continue to Next Frame - 
+  * Selecting option 6 will move the exchange to the next timestamp. 
+  * Any outstanding bids and asks will be processed, and your wallet will be updated based on the completed transactions.
 
-Example 3: Continue to Next Frame
-Selecting option 6 will move the exchange to the next timestamp. Any outstanding bids and asks will be processed, and your wallet will be updated based on the completed transactions.
-
-D. Error Handling
+#Error Handling #
 
 While using the MerkelRex Application, you might encounter the following issues:
 
@@ -66,7 +73,7 @@ If your bid or ask does not match any available counterpart in the order book, i
 4. Unexpected Exits:
 If you force close the application or encounter an unexpected shutdown, your progress will not be saved. Ensure to complete all transactions before exiting the program properly via option 7.
 
-E. Contact/Support
+#Contact/Support #
 
 For further assistance, bug reports, or feedback on the MerkelRex Application, feel free to reach out to:
 
@@ -75,3 +82,4 @@ Email: tanujbhatt8279@gmail.com
 ALternate Email: KHAJANBHATT.230114819@gehu.ac.in
 
 We appreciate your feedback and contributions to improve the MerkelRex Application!
+
