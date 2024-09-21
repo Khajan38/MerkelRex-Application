@@ -10,7 +10,7 @@ int main(){
     cout<<"\nEnter Database Name and Location (D:\\Tanuj\\...) or Press Enter to Proceed with Default Database? : ";
     getline(cin, fileName);
     cout<<"\nUsing Database : ";
-    if (fileName == "") {cout<<"Default -> data.csv\n"<<endl; fileName = "data.csv";}
+    if (fileName == "") {cout<<"Default -> data.csv\n"<<endl; fileName = "data/data.csv";}
     else cout<<fileName<<endl;
     MerkelMain app(fileName);
     Display::Bottom_Line(3);

@@ -40,19 +40,19 @@ void Help::errorHandling(void){}
 void Help::support(void){}
 
 void Help::TXTReader(void){
-     ifstream csvFile{"Help.txt"};
-     if (!csvFile.is_open()) throw std::runtime_error("Could not open file: " + csvFileInput);
-     string csvLine;
-     int lineNumber = 0;  // For tracking line numbers
-     while (getline(csvFile, csvLine, '\n')) {
-          lineNumber++;
-          try {
-               OrderBookEntry entry = stringToOrderBookEntry(tokenise(csvLine, ','));
-               entries.push_back(entry);
-          }
-          catch (const std::exception& e) {
-               cerr << "Error processing line " << lineNumber << ": " << e.what() << endl;
-          }
-     }
-     return entries;
+     // ifstream csvFile{"Help.txt"};
+     // if (!csvFile.is_open()) throw std::runtime_error("Could not open file: " + csvFileInput);
+     // string csvLine;
+     // int lineNumber = 0;  // For tracking line numbers
+     // while (getline(csvFile, csvLine, '\n')) {
+     //      lineNumber++;
+     //      try {
+     //           OrderBookEntry entry = stringToOrderBookEntry(tokenise(csvLine, ','));
+     //           entries.push_back(entry);
+     //      }
+     //      catch (const std::exception& e) {
+     //           cerr << "Error processing line " << lineNumber << ": " << e.what() << endl;
+     //      }
+     // }
+     // return entries;
 } 

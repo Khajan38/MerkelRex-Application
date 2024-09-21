@@ -39,7 +39,7 @@ MerkelRex/
 │   ├── Help.txt                  # Help text for the application (Main Menu help section)
 │   └── Directory Structure.md    # Tells about Directory Structure
 │
-├── CMakeLists.txt / Makefile     # Build system (CMake or Make)
+├── CMakeLists.txt                # Build system (CMake or Make)
 ├── .gitignore                    # Ignored files by Git
 ├── LICENSE                       # License for your project
 └── README.md                     # Project overview

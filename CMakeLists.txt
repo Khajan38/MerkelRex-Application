@@ -12,15 +12,17 @@ include_directories(include)
 
 # Add executable and source files
 add_executable(MerkelRex 
-    src/main.cpp 
-    src/MerkelMain.cpp 
-    src/MerkelMenu.cpp 
-    src/MerkelRex\ Engine.cpp 
-    src/CSV\ Reader.cpp 
-    src/OrderBook.cpp 
-    src/Wallet.cpp 
-    src/OrderBookEntry.cpp 
+    src/main.cpp
+    src/MerkelMain.cpp
+    src/MerkelMenu.cpp
+    src/MerkelRex\ Engine.cpp
+    src/CSV\ Reader.cpp
+    src/OrderBook.cpp
+    src/Wallet.cpp
+    src/OrderBookEntry.cpp
     src/Statistical\ Functions.cpp
+    src/Display\ Basics.cpp
+    src/Help.cpp
 )
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
