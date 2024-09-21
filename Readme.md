@@ -4,7 +4,9 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![LinkedIn Follow](https://img.shields.io/badge/Follow%20on-LinkedIn-blue?style=social&logo=linkedin)](https://www.linkedin.com/in/khajanbhatt/)
 
-Hi, I am **Khajan Bhatt**. Welcome to the **MerkelRex Application** - a project developed as part of the **"Object-Oriented Programming"** specialization from **Coursera**, created during my 2nd Year of B.Tech. C.S.E.
+<img src="docs/Trading.jpeg" alt="MerkelRex Application" style="width:100%;"/> <br>
+
+<p style="font-size:16px;"> Hi, I am <B>Khajan Bhatt</B>. Welcome to the <B>>MerkelRex Application</B> - a project developed as part of the <B>"Object-Oriented Programming"</B> specialization from <B>Coursera</B>, created during my 2nd Year of B.Tech. C.S.E. </p>
 
     Platform: Coursera (University of London)
 
