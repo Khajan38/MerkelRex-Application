@@ -1,3 +1,0 @@
-D:/Tanuj/Coding/Object Oriented Programming/.gitignore/build/CMakeFiles/MerkelRex.dir
-D:/Tanuj/Coding/Object Oriented Programming/.gitignore/build/CMakeFiles/edit_cache.dir
-D:/Tanuj/Coding/Object Oriented Programming/.gitignore/build/CMakeFiles/rebuild_cache.dir
