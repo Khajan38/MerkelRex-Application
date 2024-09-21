@@ -1,5 +1,5 @@
 # OOPS and Generic Programming
-This branch in the repository specifically contains the missions focused on the Object-Oriented Programming Styles and Generic Programming concepts. 
+This branch in the repository specifically contains the Topic Implementations and a MerkelRex Application focused on the Object-Oriented Programming Styles and Generic Programming concepts. 
 
 <img src="OOPS-Concepts.jpeg" alt="Object Oriented Programming Style">
 
@@ -47,7 +47,17 @@ __See me on LinkedIn__ : [Link to my LinkedIn ID](https://www.linkedin.com/in/kh
 
 <img src="Four-pillars-of-Object-Oriented-Programming.png" alt="Pillars of OOPS" height="250">
 
-## Files in the Project
-    Platform : Coursera
-    Specialization: Object Oriented Programming
-    Lecturer: Dr Matthew Yee-King, Lecturer, University of London
+## Know about Specialization
+    Platform: Coursera (University of London)
+
+    Specialization: Object Oriented Programming (5 Courses)
+
+          1. Introduction to Object Oriented Programming in C++
+          2. C++ Programming : Classes and Data
+          3. Object Oriented Programming in C++ - Functions
+          4. Working with Objects in C++
+          5. Use C++ to build a Crypto Trading Platform: Final System
+
+    Lecturer: Dr Matthew Yee-King,
+              Lecturer in Computing at Goldsmiths, 
+              University of London 
