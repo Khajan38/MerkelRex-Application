@@ -40,6 +40,8 @@ __See me on LinkedIn :__ [Link to my LinkedIn ID](https://www.linkedin.com/in/kh
 ## Overview
 MerkelRex is a robust application designed to manage and analyze order book data from CSV files. It features a powerful matching engine and provides statistical insights into trading data, making it a valuable tool for traders and analysts.
 
+The MerkelRex Application is a C++-based order book management system designed to analyze trading data and provide insights using CSV file handling. This project is an object-oriented C++ application that features a matching engine for buy/sell orders, along with statistical analysis tools for trading data, making it suitable for crypto trading enthusiasts and developers.
+
 ## Features
 - **CSV Data Handling**: Read and process trading data from CSV files.
 - **Matching Engine**: Efficiently match buy and sell orders.
